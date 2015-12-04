@@ -1,7 +1,7 @@
 var express = require("express");
 var router = express.Router();
-var workout = require("../models/workout");
-var exercise = require("../models/exercise");
+var Workout = require("../models/workout");
+var Exercise = require("../models/exercise");
 
 function error(response, message){
   response.status(500);
@@ -9,10 +9,12 @@ function error(response, message){
 }
 
 router.get("/", function(req, res){
-  exercise.find({}).populate("workout", "name").then(function(exercises){
+  Exercise.find({}).populate("workout", "title").then(function(exercises){
     res.json(exercises);
   });
 });
+// above route is correct
+// check the routes below
 
 router.get("/:id", function(req, res){
   exercise.findById(req.params.id).populate("workout", "name").then(function(exercise){
@@ -25,7 +27,7 @@ router.put("/:id", function(req, res){
     res.json(exercise);
   });
 });
-
+ 
 router.delete("/:id", function(req, res){
   exercise.findById(req.params.id).then(function(exercise){
     workout.findByIdAndUpdate(exercise.workout._id, {
@@ -34,7 +36,7 @@ router.delete("/:id", function(req, res){
       return exercise.remove();
     }).then(function(){
       res.json({success: true});
-    })
+    });
   });
 });
 
