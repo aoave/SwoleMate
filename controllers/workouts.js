@@ -5,11 +5,11 @@ var Exercise = require("../models/exercise");
 
 function error(response, message){
   response.status(500);
-  response.json({error: message})
+  response.json({error: message});
 }
 
 router.get("/", function(req, res){
-  Workout.find({}.populate("exercises").then(function(workouts){
+  Workout.find({}).populate("exercises").then(function(workouts){
     res.json(workouts);
   });
 });
